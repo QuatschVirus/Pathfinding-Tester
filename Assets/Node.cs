@@ -7,14 +7,14 @@ namespace Pathfinding
 {
     public class Node : MonoBehaviour
     {
-        public Vector3 position => transform.position;
-        public float distanceToTarget => (PathfinderHelper.Instance.target.position - position).magnitude;
-        public float distanceToOrigin => (PathfinderHelper.Instance.origin.position - position).magnitude;
+        public Vector3 Position => transform.position;
+        public float DistanceToTarget => (PathfinderHelper.Instance.target.Position - Position).magnitude;
+        public float DistanceToOrigin => (PathfinderHelper.Instance.origin.Position - Position).magnitude;
 
-        public bool blocked { get; private set; }
-        public GameObject blockedBy;
+        public bool Blocked => blockedBy.Count > 0;
+        public readonly List<GameObject> blockedBy;
 
-        public float DistanceToNode(Node n) => (n.position - position).magnitude;
+        public float DistanceToNode(Node n) => (n.Position - Position).magnitude;
 
         // Start is called before the first frame update
         void Start()
@@ -30,12 +30,12 @@ namespace Pathfinding
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            blocked = true;
+            blockedBy.Add(other.gameObject);
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            blocked = false;
+            blockedBy.Remove(collision.gameObject);
         }
     }
 }

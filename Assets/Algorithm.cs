@@ -8,7 +8,7 @@ namespace Pathfinding
     {
         protected PathfinderHelper helper;
 
-        public abstract string Name { get; protected set; }
+        public abstract string Name { get; }
 
         // Start is called before the first frame update
         void Start()
@@ -27,6 +27,6 @@ namespace Pathfinding
             this.helper = helper;
         }
 
-        public abstract void ComputePath();
+        public abstract bool ComputePath();
     }
 }

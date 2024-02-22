@@ -43,7 +43,7 @@ namespace Pathfinding
             lR.positionCount = path.Count;
             for (int i = 0; i < path.Count; i++)
             {
-                lR.SetPosition(i, path[i].position);
+                lR.SetPosition(i, path[i].Position);
             }
         }
 
@@ -55,10 +55,20 @@ namespace Pathfinding
             path.Add(origin);
 
             float time = Time.time;
-            algorithm.ComputePath();
+            bool result = algorithm.ComputePath();
             float total = Time.time - time;
 
             timeField.text = $"{Mathf.Round(total * 100000) / 100}ms";
+            if (!result)
+            {
+                timeField.text += " - Failed to find path";
+                lR.startColor = Color.red;
+                lR.endColor = Color.red;
+            } else
+            {
+                lR.startColor = Color.green;
+                lR.endColor = Color.green;
+            }
         }
     }
 }
