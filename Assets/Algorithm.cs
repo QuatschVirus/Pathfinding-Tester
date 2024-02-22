@@ -4,9 +4,11 @@ using UnityEngine;
 
 namespace Pathfinding
 {
-    public class Algorithm : MonoBehaviour
+    public abstract class Algorithm : MonoBehaviour
     {
         protected PathfinderHelper helper;
+
+        public abstract string Name { get; protected set; }
 
         // Start is called before the first frame update
         void Start()
@@ -24,5 +26,7 @@ namespace Pathfinding
         {
             this.helper = helper;
         }
+
+        public abstract void ComputePath();
     }
 }

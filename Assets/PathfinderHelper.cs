@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 namespace Pathfinding
@@ -14,6 +15,9 @@ namespace Pathfinding
 
         public Node origin;
         public Node target;
+
+        public Text algorithmName;
+        public Text timeField;
 
         Algorithm algorithm;
 
@@ -26,8 +30,11 @@ namespace Pathfinding
         {
             Instance = this;
             algorithm = GetComponent<Algorithm>();
-            if (algorithm != null) { algorithm.Setup(this); }
             lR = GetComponent<LineRenderer>();
+
+            if (algorithm == null) { Debug.LogError("No algorithm attached!"); return; }
+            algorithm.Setup(this);
+            algorithmName.text = algorithm.Name;
         }
 
         // Update is called once per frame
@@ -38,6 +45,20 @@ namespace Pathfinding
             {
                 lR.SetPosition(i, path[i].position);
             }
+        }
+
+        public void RunPathfinder()
+        {
+            if (algorithm == null) { Debug.LogError("No algorithm attached!"); return; }
+
+            path.Clear();
+            path.Add(origin);
+
+            float time = Time.time;
+            algorithm.ComputePath();
+            float total = Time.time - time;
+
+            timeField.text = $"{Mathf.Round(total * 100000) / 100}ms";
         }
     }
 }
