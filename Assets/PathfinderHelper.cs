@@ -35,7 +35,7 @@ namespace Pathfinding
             if (algorithm == null) { Debug.LogError("No algorithm attached!"); return; }
             algorithm.Setup(this);
             algorithmName.text = algorithm.Name;
-        }
+        } 
 
         // Update is called once per frame
         void Update()

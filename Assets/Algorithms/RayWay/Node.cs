@@ -62,5 +62,12 @@ namespace Pathfinding.RayWay
             RaycastHit2D hit = Physics2D.Raycast(Position, (Position - node.Position).normalized);
             return hit.transform == node.transform;
         }
+
+        public static Node Morph(Pathfinding.Node n)
+        {
+            if (n is Node) { return n as Node; }
+            if (n.gameObject.GetComponent<Node>() != null) { return n.gameObject.GetComponent<Node>(); }
+            return n.gameObject.AddComponent<Node>();
+        }
     }
 }
