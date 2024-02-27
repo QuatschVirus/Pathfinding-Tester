@@ -12,17 +12,15 @@ namespace Pathfinding.RayWay
     {
         public GameObject colliderObject;
         public Vector2 size;
-        List<Vector2> offsets = new List<Vector2>();
+        Vector2[] offsets = new Vector2[4];
+        Vector2[] modifiers = new Vector2[] { new(-0.5f, -0.5f), new(0.5f, -0.5f), new(0.5f, 0.5f), new(-0.5f, 0.5f) };
 
         // Start is called before the first frame update
         void Start()
         {
-            foreach (Node n in nodes)
+            for (int i = 0; i < offsets.Length; i++)
             {
-                Vector2 baseOffset = ((Vector2)n.Position) - size / 2;
-                float x = baseOffset.x < 0 ? baseOffset.x + size.x : baseOffset.x;
-                float y = baseOffset.y < 0 ? baseOffset.y + size.y : baseOffset.y;
-                offsets.Add(new(x, y));
+                offsets[i] = ((Vector2)nodes[i].Position) - size * modifiers[i];
             }
         }
 
@@ -30,7 +28,10 @@ namespace Pathfinding.RayWay
         void Update()
         {
             colliderObject.transform.localScale = size;
-            foreach 
+            for (int i = 0; i < offsets.Length; i++)
+            {
+                nodes[i].transform.localPosition = size * modifiers[i] + offsets[i];
+            }
         }
 
         private void OnValidate()
