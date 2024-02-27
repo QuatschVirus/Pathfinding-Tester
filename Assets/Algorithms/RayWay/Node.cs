@@ -52,9 +52,12 @@ namespace Pathfinding.RayWay
             float closestDistance = maxDistance;
             foreach (Node child in from)
             {
-                Debug.Log(child == null, this);
+                Debug.Log(child.GetType().ToString(), this);
+                Debug.Log(child.Blocked);
                 Debug.Log(this == null, this);
                 Debug.Log(banned == null, this);
+                Debug.Log(closestDistance, this);
+                Debug.Log(closest == null, this);
 
                 if (child.DistanceToNode(this) < closestDistance && !banned.Contains(child) && !child.Blocked) { closest = child; }
             }

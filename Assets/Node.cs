@@ -12,7 +12,7 @@ namespace Pathfinding
         public float DistanceToOrigin => (PathfinderHelper.Instance.origin.Position - Position).magnitude;
 
         public bool Blocked => blockedBy.Count > 0;
-        public readonly List<GameObject> blockedBy;
+        public readonly List<GameObject> blockedBy = new();
 
         public float DistanceToNode(Node n) => (n.Position - Position).magnitude;
 

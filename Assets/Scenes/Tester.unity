@@ -1368,6 +1368,7 @@ MonoBehaviour:
   step: 1
   next: 0
   showRay: 1
+  maxIterations: 10
   path: []
 --- !u!4 &1001531402767633016
 Transform:

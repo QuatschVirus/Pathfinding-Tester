@@ -49,17 +49,20 @@ namespace Pathfinding
 
         public void RunPathfinder()
         {
+            Debug.Log("Computing!");
             if (algorithm == null) { Debug.LogError("No algorithm attached!"); return; }
 
             path.Clear();
             path.Add(origin);
 
             float time = Time.time;
-            bool result = algorithm.ComputePath();
+            Debug.Log("Starting time measurments");
+            algorithm.ComputePath();
             float total = Time.time - time;
+            Debug.Log("Stopping measurements");
 
             timeField.text = $"{Mathf.Round(total * 100000) / 100}ms";
-            if (!result)
+            if (!path[^1].transform == target.transform)
             {
                 timeField.text += " - Failed to find path";
                 lR.startColor = Color.red;

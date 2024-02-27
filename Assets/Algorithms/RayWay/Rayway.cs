@@ -11,9 +11,10 @@ namespace Pathfinding.RayWay {
         public bool step;
         public bool next;
         public bool showRay;
+        public int maxIterations;
 
-        [SerializeField]List<Node> path = new List<Node>();
-        List<Node> avoid = new List<Node>();
+        [SerializeField]List<Node> path = new();
+        List<Node> avoid = new();
 
         Node origin;
         Node target;
@@ -25,8 +26,10 @@ namespace Pathfinding.RayWay {
 
             path = new List<Node>(new Node[] {origin});
 
+            bool found = false;
+
             int counter = 0;
-            while (true)
+            while (counter < maxIterations && !found)
             {
                 helper.path = path.Cast<Pathfinding.Node>().ToList();
                 counter++;
@@ -42,6 +45,7 @@ namespace Pathfinding.RayWay {
                 Debug.Log(hit.transform.gameObject.name);
                 if (hit.transform == target.transform)
                 {
+                    found = true;
                     break;
                 }
                 Obstacle o = hit.transform.parent.GetComponent<Obstacle>();
@@ -52,10 +56,15 @@ namespace Pathfinding.RayWay {
                 path.AddRange(bypass);
                 if (step) { while (!next) {; } next = false; }
             }
-            path.Add(target);
-            helper.path = path.Cast<Pathfinding.Node>().ToList();
-            return true;
+            if (found)
+            {
+                path.Add(target);
+                helper.path = path.Cast<Pathfinding.Node>().ToList();
+            }
+            return found;
         }
+
+
 
         // Start is called before the first frame update
         void Start()
