@@ -1209,6 +1209,7 @@ GameObject:
   - component: {fileID: 1787038546}
   - component: {fileID: 1787038548}
   - component: {fileID: 1787038549}
+  - component: {fileID: 1787038550}
   m_Layer: 0
   m_Name: Pathfinder
   m_TagString: Untagged
@@ -1360,7 +1361,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1787038545}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3cd3b38aa98986a40acf2b3dd215bb01, type: 3}
   m_Name: 
@@ -1370,6 +1371,18 @@ MonoBehaviour:
   showRay: 1
   maxIterations: 10
   path: []
+--- !u!114 &1787038550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787038545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 323eeadacea466040ae693f2bf028a13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1001531402767633016
 Transform:
   m_ObjectHideFlags: 0
