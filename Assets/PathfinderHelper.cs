@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,8 +48,17 @@ namespace Pathfinding
             }
         }
 
+        public void ClearLog()
+        {
+            var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));
+            var type = assembly.GetType("UnityEditor.LogEntries");
+            var method = type.GetMethod("Clear");
+            method.Invoke(new object(), null);
+        }
+
         public void RunPathfinder()
         {
+            ClearLog();
             Debug.Log("Computing!");
             if (algorithm == null) { Debug.LogError("No algorithm attached!"); return; }
 

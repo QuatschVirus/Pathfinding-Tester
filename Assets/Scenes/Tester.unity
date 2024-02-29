@@ -270,7 +270,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Compue Path
+  m_Text: Compute Path
 --- !u!222 &338043393
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -7,9 +7,6 @@ namespace Pathfinding.RayWay {
     public class RayWay : Algorithm
     {
         public override string Name => "RayWay";
-
-        public bool step;
-        public bool next;
         public bool showRay;
         public int maxIterations;
 
@@ -51,10 +48,9 @@ namespace Pathfinding.RayWay {
                 Obstacle o = hit.transform.parent.GetComponent<Obstacle>();
                 if (o == null) { avoid.Add(lastNode); path.Remove(lastNode); continue; }
 
-                Node[] bypass = o.getClosestBypass(lastNode, target, avoid.ToArray());
+                Node[] bypass = o.getClosestBypass(lastNode, target, 1, 0.1f, 0, avoid.ToArray());
                 if (bypass == null) { avoid.Add(lastNode); path.Remove(lastNode); continue; }
                 path.AddRange(bypass);
-                if (step) { while (!next) {; } next = false; }
             }
             if (found)
             {
