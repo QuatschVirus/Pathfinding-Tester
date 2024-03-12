@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Pathfinding.GBFS
@@ -54,7 +55,7 @@ namespace Pathfinding.GBFS
             }
             path.Reverse();
 
-            PathfinderHelper.Instance.path = path;
+            PathfinderHelper.Instance.path = path.Cast<Pathfinding.Node>().ToList();
         }
 
         private IEnumerable<Node> GetNeighbors(Node node)

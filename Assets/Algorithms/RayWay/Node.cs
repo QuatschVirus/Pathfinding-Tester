@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Pathfinding.RayWay
@@ -25,13 +24,9 @@ namespace Pathfinding.RayWay
 
         public Node GetClosestConnected(Node node, Node[] banned)
         {
-            Node closest = this;
-            float closestDistance = DistanceToNode(node);
-            foreach (Node child in connected)
-            {
-                if (child.DistanceToNode(node) < closestDistance && !banned.Contains(node) && !node.Blocked) { closest = child; }
-            }
-            return closest;
+            List<Node> sorted = connected.Append(this).OrderBy(n => n.DistanceToNode(node)).ToList();
+            sorted.RemoveAll(banned.Contains);
+            return sorted.First();
         }
 
         public Node[] GetClostestConnection(Node node, Node[] banned)
@@ -49,28 +44,30 @@ namespace Pathfinding.RayWay
 
         public List<Node> GetClosestFromWithTiebreaker(List<Node> from, List<Node> deciders, float precision, Node[] banned, float maxDistance = float.MaxValue)
         {
+            Debug.Log($"Running decisive search on {this.name} with precision {precision}");
             if (from.Count < 1) return null;
-            from.OrderByDescending(n => n.DistanceToNode(this));
-            maxDistance = Math.Min(from.First().DistanceToNode(this) + precision, maxDistance);
-            from.RemoveAll(n => banned.Contains(n) || n.Blocked || n.DistanceToNode(this) > maxDistance);
+            List<Node> sorted = from.OrderBy(n => n.DistanceToNode(this)).ToList();
+            maxDistance = Math.Min(sorted.First().DistanceToNode(this) + precision, maxDistance);
+            sorted.RemoveAll(n => banned.Contains(n) || n.Blocked || n.DistanceToNode(this) > maxDistance);
             List<string> names = new();
-            foreach (Node n in from)
+            foreach (Node n in sorted)
             {
                 names.Add(n.name);
             }
             Debug.Log("Found closest: " + string.Join(", ", names));
-            switch (from.Count)
+            switch (sorted.Count)
             {
                 case 0: return null;
-                case 1: return from.Take(1).ToList();
+                case 1: return sorted.Take(1).ToList();
                 default:
                     {
                         if (deciders.Count > 0)
                         {
-                            return deciders.First().GetClosestFromWithTiebreaker(from, deciders.TakeLast(deciders.Count - 1).ToList(), precision, banned);
+                            Debug.Log("Increasing depth in search");
+                            return deciders.First().GetClosestFromWithTiebreaker(sorted, deciders.TakeLast(deciders.Count - 1).ToList(), precision, banned);
                         } else
                         {
-                            return from;
+                            return sorted;
                         }
                     }
             }

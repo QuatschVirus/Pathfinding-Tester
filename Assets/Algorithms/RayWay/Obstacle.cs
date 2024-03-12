@@ -21,13 +21,13 @@ namespace Pathfinding.RayWay
 
         }
 
-        public Node[] getClosestBypass(Node from, Node to, float precision, float precisionStep, float minimumPrecision, Node[] banned)
+        public Node[] GetClosestBypass(Node from, Node to, float precision, float precisionStep, float minimumPrecision, Node[] banned)
         {
             List<Node> options = new();
             do
             {
                 if (precision < minimumPrecision) break;
-                options = to.GetClosestFromWithTiebreaker(nodes, new Node[] {to}.ToList(), precision, banned);
+                options = to.GetClosestFromWithTiebreaker(nodes, new Node[] {from}.ToList(), precision, banned);
                 if (options == null) return null;
                 if (options.Count == 0) return null;
                 precision -= precisionStep;

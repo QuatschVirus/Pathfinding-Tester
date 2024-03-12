@@ -21,7 +21,10 @@ public class CameraAdjuster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        cam.orthographicSize = Mathf.Max(cam.orthographicSize + Input.GetAxis("Mouse ScrollWheel") * -multiplier, 1);
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            cam.orthographicSize = Mathf.Max(cam.orthographicSize + Input.GetAxis("Mouse ScrollWheel") * -multiplier, 1);
+        }
         if (Input.GetMouseButtonDown(1)) { drag = cam.ScreenToWorldPoint(Input.mousePosition); }
         if (Input.GetMouseButton(1))
         {

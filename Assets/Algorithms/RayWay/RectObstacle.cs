@@ -16,11 +16,11 @@ namespace Pathfinding.RayWay
         Vector2[] modifiers = new Vector2[] { new(-0.5f, -0.5f), new(0.5f, -0.5f), new(0.5f, 0.5f), new(-0.5f, 0.5f) };
 
         // Start is called before the first frame update
-        void Start()
+        void OnEnable()
         {
             for (int i = 0; i < offsets.Length; i++)
             {
-                offsets[i] = ((Vector2)nodes[i].Position) - size * modifiers[i];
+                offsets[i] = ((Vector2)nodes[i].transform.localPosition) - size * modifiers[i];
             }
         }
 
