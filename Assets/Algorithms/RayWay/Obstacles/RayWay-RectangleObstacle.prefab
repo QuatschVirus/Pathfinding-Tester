@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5266791670052686439}
   - component: {fileID: 5251702935902246827}
   - component: {fileID: 3029220681271736892}
+  - component: {fileID: 1782853626912909895}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
@@ -144,6 +145,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   referenceOverride: {fileID: 5509474371171670107}
+--- !u!50 &1782853626912909895
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4467263154322880268}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!1 &5509474371171670107
 GameObject:
   m_ObjectHideFlags: 0

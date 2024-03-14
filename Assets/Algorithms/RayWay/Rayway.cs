@@ -9,9 +9,10 @@ namespace Pathfinding.RayWay {
         public override string Name => "RayWay";
         public bool showRay;
         public int maxIterations;
+        public float bumperRadius;
 
         [SerializeField]List<Node> path = new();
-        List<Node> avoid = new();
+        readonly List<Node> avoid = new();
 
         Node origin;
         Node target;
@@ -37,37 +38,43 @@ namespace Pathfinding.RayWay {
                 Node lastNode = path.Last();
 
                 lastNode.GetComponent<Collider2D>().enabled = false;
-                RaycastHit2D hit = Physics2D.Raycast(lastNode.Position, target.Position - lastNode.Position, lastNode.DistanceToTarget);
+                RaycastHit2D hit = Physics2D.CircleCast(lastNode.Position, bumperRadius, target.Position - lastNode.Position, lastNode.DistanceToTarget);
                 lastNode.GetComponent<Collider2D>().enabled = true;
-                Debug.Log("Raycast Hit: " + hit.transform.gameObject.name, hit.transform.gameObject);
-                if (hit.transform == target.transform)
+                if (hit)
                 {
-                    found = true;
-                    break;
-                }
-                if (hit.transform.TryGetComponent(out Node n))
+                    Debug.Log("Raycast Hit: " + hit.transform.gameObject.name, hit.transform.gameObject);
+                    if (hit.transform == target.transform)
+                    {
+                        found = true;
+                    }
+                    else if (hit.transform.TryGetComponent(out Node n))
+                    {
+                        Debug.Log("Hit Node");
+                        path.Add(n);
+                    }
+                    else if (hit.transform.TryGetComponent(out Pathfinding.Node pN))
+                    {
+                        Debug.Log("Hit standard Node, morphing");
+                        path.Add(Node.Morph(pN));
+                    }
+                    else if (hit.transform.parent.TryGetComponent(out Obstacle o))
+                    {
+                        Node[] bypass = o.GetClosestBypass(lastNode, target, 1, 0.1f, 0, avoid.ToArray());
+                        if (bypass == null) { avoid.Add(lastNode); path.Remove(lastNode); continue; }
+                        path.AddRange(bypass);
+                    }
+                    else
+                    {
+                        Debug.Log("Hit unknown");
+                        avoid.Add(lastNode);
+                        path.Remove(lastNode);
+                    }
+                } else
                 {
-                    Debug.Log("Hit Node");
-                    path.Add(n);
-                    continue;
-                }
-                if (hit.transform.TryGetComponent(out Pathfinding.Node pN))
-                {
-                    Debug.Log("Hit standard Node, morphing");
-                    path.Add(Node.Morph(pN));
-                    continue;
-                }
-                if (!hit.transform.parent.TryGetComponent(out Obstacle o)) 
-                {
-                    Debug.Log("Hit unknown");
+                    Debug.Log("No Hit");
                     avoid.Add(lastNode);
                     path.Remove(lastNode);
-                    continue;
                 }
-
-                Node[] bypass = o.GetClosestBypass(lastNode, target, 1, 0.1f, 0, avoid.ToArray());
-                if (bypass == null) { avoid.Add(lastNode); path.Remove(lastNode); continue; }
-                path.AddRange(bypass);
             }
             if (found)
             {

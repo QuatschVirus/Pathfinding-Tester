@@ -27,6 +27,7 @@ namespace Pathfinding.RayWay
             do
             {
                 if (precision < minimumPrecision) break;
+                // choose which of the nodes on the object that represents the closes path to target when walking from the "from" node
                 options = to.GetClosestFromWithTiebreaker(nodes, new Node[] {from}.ToList(), precision, banned);
                 if (options == null) return null;
                 if (options.Count == 0) return null;

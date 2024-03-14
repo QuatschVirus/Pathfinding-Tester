@@ -26,6 +26,7 @@ namespace Pathfinding.RayWay
         {
             List<Node> sorted = connected.Append(this).OrderBy(n => n.DistanceToNode(node)).ToList();
             sorted.RemoveAll(banned.Contains);
+            sorted.RemoveAll(n => n.Blocked);
             return sorted.First();
         }
 
@@ -42,11 +43,18 @@ namespace Pathfinding.RayWay
             }
         }
 
-        public List<Node> GetClosestFromWithTiebreaker(List<Node> from, List<Node> deciders, float precision, Node[] banned, float maxDistance = float.MaxValue)
-        {
-            Debug.Log($"Running decisive search on {this.name} with precision {precision}");
-            if (from.Count < 1) return null;
-            List<Node> sorted = from.OrderBy(n => n.DistanceToNode(this)).ToList();
+        // when no deciders, check which of the obstacles nodes is cloest to target
+        public List<Node> GetClosestFromWithTiebreaker(List<Node> consideredNodesToWalkTo, List<Node> possibleNodesToWalkFrom, float precision, Node[] banned, float maxDistance = float.MaxValue)
+        {   
+
+           
+
+            Debug.Log($"Running decisive search on {name} with precision {precision}");
+            if (consideredNodesToWalkTo.Count < 1) return null;
+
+            // order all the possible nodes to walk to, by their distance to the node the algorithm is trying to reach
+
+            List<Node> sorted = consideredNodesToWalkTo.OrderBy(n => n.DistanceToNode(this)).ToList();
             maxDistance = Math.Min(sorted.First().DistanceToNode(this) + precision, maxDistance);
             sorted.RemoveAll(n => banned.Contains(n) || n.Blocked || n.DistanceToNode(this) > maxDistance);
             List<string> names = new();
@@ -58,13 +66,17 @@ namespace Pathfinding.RayWay
             switch (sorted.Count)
             {
                 case 0: return null;
-                case 1: return sorted.Take(1).ToList();
+                case 1: return sorted.Take(1).ToList(); // if theres only 1 possible node, go for it
                 default:
                     {
-                        if (deciders.Count > 0)
+                        if (possibleNodesToWalkFrom.Count > 0)
                         {
                             Debug.Log("Increasing depth in search");
-                            return deciders.First().GetClosestFromWithTiebreaker(sorted, deciders.TakeLast(deciders.Count - 1).ToList(), precision, banned);
+                               
+                            // in the first iteration when we are just walking from one node towards a target
+                            // sort them again by their distance to the node trying to walk 
+                            
+                            return possibleNodesToWalkFrom.First().GetClosestFromWithTiebreaker(sorted, possibleNodesToWalkFrom.TakeLast(possibleNodesToWalkFrom.Count - 1).ToList(), precision, banned);
                         } else
                         {
                             return sorted;

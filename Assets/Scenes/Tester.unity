@@ -941,6 +941,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showRay: 1
   maxIterations: 10
+  bumperRadius: 0.1
   path: []
 --- !u!1001 &1955197464
 PrefabInstance:
@@ -956,11 +957,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7500506918380838788, guid: fc630a48e676a3d4ea19c18554eb1a8d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7500506918380838788, guid: fc630a48e676a3d4ea19c18554eb1a8d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 7500506918380838788, guid: fc630a48e676a3d4ea19c18554eb1a8d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1339,7 +1340,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7500506918380838788, guid: fc630a48e676a3d4ea19c18554eb1a8d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: 7500506918380838788, guid: fc630a48e676a3d4ea19c18554eb1a8d, type: 3}
       propertyPath: m_LocalPosition.z
