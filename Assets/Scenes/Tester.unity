@@ -797,12 +797,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 931772232}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 584bd360ff4d0ca4f8cce453fe1527d7, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e1c0618fb6362c42a19c521ec3de5d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   connected:
-  - {fileID: 5557274832409956057}
   - {fileID: 1253656936}
+  - {fileID: 5557274832409956057}
 --- !u!1 &964129353
 GameObject:
   m_ObjectHideFlags: 0
@@ -968,12 +968,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 918738615}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 584bd360ff4d0ca4f8cce453fe1527d7, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e1c0618fb6362c42a19c521ec3de5d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   connected:
-  - {fileID: 1282721976}
   - {fileID: 931772233}
+  - {fileID: 1282721976}
 --- !u!1 &1282721975 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8026484990615664914, guid: d9260fad2bf506b4d95e2a1b9ef97734, type: 3}
@@ -988,7 +988,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1282721975}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 584bd360ff4d0ca4f8cce453fe1527d7, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e1c0618fb6362c42a19c521ec3de5d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   connected:
@@ -1208,7 +1208,6 @@ GameObject:
   - component: {fileID: 1787038547}
   - component: {fileID: 1787038546}
   - component: {fileID: 1787038548}
-  - component: {fileID: 1787038549}
   - component: {fileID: 1787038550}
   m_Layer: 0
   m_Name: Pathfinder
@@ -1354,23 +1353,6 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 0
---- !u!114 &1787038549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1787038545}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cd3b38aa98986a40acf2b3dd215bb01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  step: 1
-  next: 0
-  showRay: 1
-  maxIterations: 10
-  path: []
 --- !u!114 &1787038550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1383,6 +1365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 323eeadacea466040ae693f2bf028a13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path: []
 --- !u!4 &1001531402767633016
 Transform:
   m_ObjectHideFlags: 0
@@ -1446,10 +1429,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodes:
-  - {fileID: 5557274832409956057}
-  - {fileID: 931772233}
-  - {fileID: 1253656936}
-  - {fileID: 1282721976}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   colliderObject: {fileID: 1414906237}
   size: {x: 1, y: 1}
 --- !u!1 &3728503779802968676
@@ -1613,7 +1596,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1627522483}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 584bd360ff4d0ca4f8cce453fe1527d7, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e1c0618fb6362c42a19c521ec3de5d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   connected:
