@@ -70,6 +70,7 @@ namespace Pathfinding
             algorithm.ComputePath();
             float total = Time.time - time;
             Debug.Log("Stopping measurements");
+            
 
             timeField.text = $"{Mathf.Round(total * 100000) / 100}ms";
             if (!path[^1].transform == target.transform)
