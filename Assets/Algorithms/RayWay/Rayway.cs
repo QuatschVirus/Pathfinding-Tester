@@ -39,6 +39,7 @@ namespace Pathfinding.RayWay {
                 lastNode.GetComponent<Collider2D>().enabled = false;
                 RaycastHit2D hit = Physics2D.Raycast(lastNode.Position, target.Position - lastNode.Position, lastNode.DistanceToTarget);
                 lastNode.GetComponent<Collider2D>().enabled = true;
+                lastNode.GetComponent<Collider2D>().enabled = true;
                 Debug.Log(hit.transform.gameObject.name);
                 if (hit.transform == target.transform)
                 {

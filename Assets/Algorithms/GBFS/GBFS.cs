@@ -100,14 +100,14 @@ namespace Pathfinding.GBFS
         private IEnumerable<Node> GetNeighbors(Node node)
         {
 
-            // shoot towards target
+            // shoot towards all nodes
             // find target or blocking object (square?)
             // if target, target is neighbor
-            // if object, check which of the nodes in the corners has a non-obstructed path from node to node (raycast something?) 
-            // return those nodes
+            // if object in the way, not a neighbor
+            //list of all the nodes
 
 
-            // Return neighbors that are not blocked and not in the avoid list
+            //Return neighbors that are not blocked and not in the avoid list
             IEnumerable<Node> result = node.connected.Where(neighbor => !neighbor.Blocked && !avoid.Contains(neighbor));
             return result;
         }
