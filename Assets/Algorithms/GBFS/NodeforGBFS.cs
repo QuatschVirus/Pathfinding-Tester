@@ -18,9 +18,11 @@ namespace Pathfinding.GBFS
         // Parent node property used to trace back the path from the destination to the source.
         public Node Parent { get; set; }
 
+        public List<Node> allNodes;
         void Start()
         {
-
+            allNodes = FindObjectsOfType<Node>().Where(node => node != this).ToList();
+            FindConnectedNodes(allNodes);
         }
 
         void Update()
@@ -48,36 +50,44 @@ namespace Pathfinding.GBFS
         }
 
 
-        /*public Node[] GetConnected(Node currentNode)
+        public void FindConnectedNodes(List<Node> allNodes)
         {
-            List<Node> neighbors = new List<Node>(); // List to hold all neighbors
+            connected.Clear(); // Clear existing connections
 
             foreach (Node targetNode in allNodes)
             {
-                // Skip the current node to avoid self-targeting
-                if (targetNode == currentNode) continue;
+                // Skip the current node to avoid Node self-targeting
+                if (targetNode == this) continue;
 
                 // Calculate the direction from the current node to the target node
-                Vector2 direction = targetNode.transform.position - currentNode.transform.position;
+                Vector2 direction = targetNode.transform.position - this.transform.position;
+
+                this.GetComponent<Collider2D>().enabled = false;
 
                 // Send a raycast from the current node to the target node
-                RaycastHit2D hit = Physics2D.Raycast(currentNode.transform.position, direction.normalized, direction.magnitude);
+                RaycastHit2D hit = Physics2D.Raycast(this.transform.position, direction.normalized, direction.magnitude);
+
+                this.GetComponent<Collider2D>().enabled = true;
+
 
                 // Check if the raycast hit something
                 if (hit.collider != null)
                 {
+
+                    Debug.Log(hit.collider.name);
+
+                    // Obtain the Node component from the hit collider
                     Node hitNode = hit.collider.GetComponent<Node>();
-                    // If the raycast directly hits the target node and it's not blocked or in the avoid list, add it to neighbors
-                    if (hitNode == targetNode && !targetNode.Blocked && !avoid.Contains(targetNode))
+
+                    // Check if the hitNode is not null and matches the targetNode
+                    if (hitNode != null && hitNode == targetNode)
                     {
-                        neighbors.Add(targetNode);
+                        // The raycast hit the targetNode, so add it to the connected nodes
+                        connected.Add(targetNode);
                     }
                 }
             }
-
-            return neighbors; // Return the list of neighbors
-        }*/
-
+        }
 
         // Returns an array containing the current node and its closest connection to the specified node, excluding banned nodes.
         public Node[] GetClostestConnection(Node node, Node[] banned)

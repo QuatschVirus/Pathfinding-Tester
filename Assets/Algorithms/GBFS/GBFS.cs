@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+
 using System.Linq;
 
 // Define the namespace for the Greedy Best First Search algorithm within the pathfinding context
@@ -50,22 +52,33 @@ namespace Pathfinding.GBFS
                 // Check if the current node is the goal node
                 if (currentNode == goalNode)
                 {
+
                     // Construct the path from start to goal
                     ConstructPath(currentNode);
                     helper.path = path.Cast<Pathfinding.Node>().ToList();
                     return true; // Path has been found
                 }
 
+                int stuff = 0;
+
                 // Explore all unblocked neighbors of the current node
                 foreach (Node neighbor in GetNeighbors(currentNode))
                 {
+                    stuff++;
+                    Thread.Sleep(1);
+
+                    Debug.Log(stuff);
+
                     // Add the neighbor to the open set if it's not already present and not blocked
                     if (!openSet.Contains(neighbor) && !neighbor.Blocked)
                     {
                         // Calculate the heuristic value for the neighbor
                         neighbor.HeuristicValue = CalculateHeuristic(neighbor.Position, goalNode.Position);
                         // Set the current node as the parent of the neighbor
-                        neighbor.Parent = currentNode;
+                        if (neighbor != startNode)
+                        {
+                            neighbor.Parent = currentNode;
+                        }
                         // Add the neighbor to the open set
                         openSet.Add(neighbor);
                     }
@@ -77,22 +90,32 @@ namespace Pathfinding.GBFS
             return false; // Path not found
         }
 
-        // Constructs the path from the goal node back to the start node
         private void ConstructPath(Node node)
         {
-            // Clear the existing path
-            path.Clear();
+            // Use a stack to reverse the path
+            Stack<Node> stack = new Stack<Node>();
+
             // Traverse from the goal node up through the parent nodes
             while (node != null)
             {
-                // Add the node to the path
-                path.Add(node);
+                // Push the current node onto the stack
+                stack.Push(node);
+
                 // Move to the parent node
-                node = node.Parent as Node;
+                node = node.Parent;
             }
-            // The path is constructed in reverse, so it needs to be reversed to start from the start node
-            path.Reverse();
-            Debug.Log("path founbd");
+
+            // Clear the existing path
+            path.Clear();
+
+            // Pop each node from the stack to construct the path in the correct order
+            while (stack.Count > 0)
+            {
+                Node currentNode = stack.Pop();
+                path.Add(currentNode);
+            }
+
+            Debug.Log("Path found");
             // Update path helper here with the newly constructed path
         }
 
