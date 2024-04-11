@@ -10,7 +10,7 @@ namespace Pathfinding.GBFS
     public class GBFS : Algorithm
     {
         // A sorted set to hold the nodes to be explored, sorted based on a custom comparator
-        private SortedSet<Node> openSet = new SortedSet<Node>(new NodeComparer());
+        private SortedSet<Node> queue = new SortedSet<Node>(new NodeComparer());
 
         // Overriding the Name property from the base class to specify the algorithm's name
         public override string Name => "Greedy";
@@ -34,24 +34,31 @@ namespace Pathfinding.GBFS
             startNode = Node.Morph(helper.origin);
             goalNode = Node.Morph(helper.target);
 
+            List<Node> visited = new List<Node>();
+
             // Clear the open set at the beginning of path computation
-            openSet.Clear();
+            queue.Clear();
             // Add the start node to the open set
-            openSet.Add(startNode);
+            startNode.HeuristicValue = CalculateHeuristic(startNode.Position, goalNode.Position);
+
+            queue.Add(startNode);
+            visited.Add(startNode);
+
 
             // Continue exploring nodes until there are no nodes left in the open set
-            while (openSet.Count > 0)
+            while (queue.Count > 0)
             {
                 // Get the node with the lowest heuristic value from the open set
-                Node currentNode = openSet.Min;
+                Node currentNode = queue.Min;
                 // Remove the current node from the open set as it's now being processed
-                openSet.Remove(currentNode);
+                queue.Remove(currentNode);
 
                 // Check if the current node is the goal node
                 if (currentNode == goalNode)
                 {
                     // Construct the path from start to goal
-                    ConstructPath(currentNode);
+                    ConstructPath(visited);
+                    Debug.Log("Path found 1");
                     helper.path = path.Cast<Pathfinding.Node>().ToList();
                     return true; // Path has been found
                 }
@@ -60,14 +67,19 @@ namespace Pathfinding.GBFS
                 foreach (Node neighbor in GetNeighbors(currentNode))
                 {
                     // Add the neighbor to the open set if it's not already present and not blocked
-                    if (!openSet.Contains(neighbor) && !neighbor.Blocked)
+                    if (!visited.Contains(neighbor) && !neighbor.Blocked)
                     {
-                        // Calculate the heuristic value for the neighbor
-                        neighbor.HeuristicValue = CalculateHeuristic(neighbor.Position, goalNode.Position);
-                        // Set the current node as the parent of the neighbor
-                        neighbor.Parent = currentNode;
-                        // Add the neighbor to the open set
-                        openSet.Add(neighbor);
+
+               
+
+                            // Calculate the heuristic value for the neighbor
+                            neighbor.HeuristicValue = CalculateHeuristic(neighbor.Position, goalNode.Position);
+                            // Set the current node as the parent of the neighbor
+                            neighbor.Parent = currentNode;
+                            // Add the neighbor to the open set
+                            queue.Add(neighbor);
+                            visited.Add(neighbor);
+                        
                     }
                 }
             }
@@ -78,22 +90,55 @@ namespace Pathfinding.GBFS
         }
 
         // Constructs the path from the goal node back to the start node
-        private void ConstructPath(Node node)
+        private void ConstructPath(List<Node> visited)
         {
-            // Clear the existing path
+            /*            // Clear the existing path
+                        path.Clear();
+                        // Traverse from the goal node up through the parent nodes
+                        while (node != null)
+                        {
+                            // Add the node to the path
+                            path.Add(node);
+                            // Move to the parent node
+                            node = node.Parent as Node;
+                        }
+                        // The path is constructed in reverse, so it needs to be reversed to start from the start node
+                        path.Reverse();
+                        // Update path helper here with the newly constructed path*/
+
+            // https://github.com/MagmaArcade/Tree-Search-Algorithms/blob/main/Robot%20Navigation/Search.cs#L417
             path.Clear();
-            // Traverse from the goal node up through the parent nodes
-            while (node != null)
+            List<Node> constructed = new List<Node>();
+            visited.Reverse();
+
+            foreach (Node node in visited)
             {
-                // Add the node to the path
-                path.Add(node);
-                // Move to the parent node
-                node = node.Parent as Node;
+                // if child is goal, add to path
+                if (node.Position.x == goalNode.Position.x && node.Position.y == goalNode.Position.y)
+                {
+                    constructed.Add(node);
+                }
+
+                if(constructed.Count > 0)
+                {
+                    Node last_added_node = constructed[constructed.Count - 1];
+                    if (last_added_node.Parent == node)
+                    {
+                        constructed.Add(node);
+                    }
+                }
+
             }
-            // The path is constructed in reverse, so it needs to be reversed to start from the start node
-            path.Reverse();
-            Debug.Log("path founbd");
-            // Update path helper here with the newly constructed path
+
+            Debug.Log(constructed.Count);
+
+            constructed.Reverse();
+            path = constructed;
+
+            Debug.Log(path);
+
+
+
         }
 
         // Retrieves all valid neighbors of a node
