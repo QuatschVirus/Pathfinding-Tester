@@ -9,10 +9,14 @@ namespace Pathfinding.GBFS
     // Node class inheriting from a base Pathfinding.Node class.
     public class Node : Pathfinding.Node
     {
-        // A list to hold connected nodes, establishing the graph structure.
+
         public List<Node> connected;
 
-        // Heuristic value property used in Greedy Best-First Search (GBFS) for decision making.
+
+        // list of all the nodes
+        private List<Node> allNodes;
+
+        // Heuristic value property.
         public float HeuristicValue { get; set; }
 
         // Parent node property used to trace back the path from the destination to the source.
@@ -20,12 +24,60 @@ namespace Pathfinding.GBFS
 
         void Start()
         {
+            // Get all "node objects" in scene
+            allNodes = FindObjectsOfType<Node>().ToList();
 
+            Node[] neighbors = GetConnected(this);  
+
+            foreach(Node node in neighbors)
+            {
+                connected.Add(node);
+            }
         }
 
         void Update()
         {
 
+        }
+
+        //Returns a list of all the nodes that is reachable for the currentNode
+        public Node[] GetConnected(Node currentNode)
+        {
+
+            
+
+            List<Node> neighbors = new List<Node>(); // List to hold all neighbors
+
+            foreach (Node targetNode in allNodes)
+            {
+
+                if (currentNode == targetNode) { continue; }
+
+                // Calculate the direction from the current node to the target node
+                Vector2 direction = targetNode.transform.position - currentNode.transform.position;
+
+                //disable currentNodes collider to avoid self hitting
+                currentNode.GetComponent<Collider2D>().enabled = false;
+
+                // Send a raycast from the current node to the target node
+                RaycastHit2D hit = Physics2D.Raycast(currentNode.transform.position, direction.normalized, direction.magnitude);
+
+                //enable it again
+               currentNode.GetComponent<Collider2D>().enabled = true;
+
+                // Check if the raycast hit something
+                if (hit.collider != null)
+                {
+                    Node hitNode = hit.collider.GetComponent<Node>();
+                    // If the raycast directly hits the target node and it's not blocked or in the avoid list, add it to neighbors
+                    if (hitNode == targetNode && !targetNode.Blocked)
+                    {
+                        neighbors.Add(targetNode);
+                    }
+                }
+            }
+
+            return neighbors.ToArray(); // Return the list of neighbors
         }
 
         // Returns the closest connected node to the specified node, excluding any nodes in the banned list.
@@ -46,38 +98,6 @@ namespace Pathfinding.GBFS
 
             return closest; // Return the closest node found.
         }
-
-
-        /*public Node[] GetConnected(Node currentNode)
-        {
-            List<Node> neighbors = new List<Node>(); // List to hold all neighbors
-
-            foreach (Node targetNode in allNodes)
-            {
-                // Skip the current node to avoid self-targeting
-                if (targetNode == currentNode) continue;
-
-                // Calculate the direction from the current node to the target node
-                Vector2 direction = targetNode.transform.position - currentNode.transform.position;
-
-                // Send a raycast from the current node to the target node
-                RaycastHit2D hit = Physics2D.Raycast(currentNode.transform.position, direction.normalized, direction.magnitude);
-
-                // Check if the raycast hit something
-                if (hit.collider != null)
-                {
-                    Node hitNode = hit.collider.GetComponent<Node>();
-                    // If the raycast directly hits the target node and it's not blocked or in the avoid list, add it to neighbors
-                    if (hitNode == targetNode && !targetNode.Blocked && !avoid.Contains(targetNode))
-                    {
-                        neighbors.Add(targetNode);
-                    }
-                }
-            }
-
-            return neighbors; // Return the list of neighbors
-        }*/
-
 
         // Returns an array containing the current node and its closest connection to the specified node, excluding banned nodes.
         public Node[] GetClostestConnection(Node node, Node[] banned)
