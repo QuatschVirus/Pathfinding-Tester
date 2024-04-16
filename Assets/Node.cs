@@ -30,6 +30,7 @@ namespace Pathfinding
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            Debug.Log($"Node {name} is blocked by {other.name}");
             blockedBy.Add(other.gameObject);
         }
 

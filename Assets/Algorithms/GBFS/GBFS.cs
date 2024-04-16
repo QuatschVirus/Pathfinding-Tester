@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using System.Linq;
 
@@ -139,6 +140,7 @@ namespace Pathfinding.GBFS
 
 
 
+            PathfinderHelper.Instance.path = path.Cast<Pathfinding.Node>().ToList();
         }
 
         // Retrieves all valid neighbors of a node
