@@ -60,7 +60,7 @@ namespace Pathfinding.GBFS
                     // Construct the path from start to goal
                     ConstructPath(visited);
                     Debug.Log("Path found 1");
-                    helper.path = path.Cast<Pathfinding.Node>().ToList();
+                    PathfinderHelper.Instance.path = path.Cast<Pathfinding.Node>().ToList();
                     return true; // Path has been found
                 }
 
@@ -140,7 +140,6 @@ namespace Pathfinding.GBFS
 
 
 
-            PathfinderHelper.Instance.path = path.Cast<Pathfinding.Node>().ToList();
         }
 
         // Retrieves all valid neighbors of a node

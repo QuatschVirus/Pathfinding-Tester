@@ -10,7 +10,7 @@ namespace Pathfinding.GBFS
     public class Node : Pathfinding.Node
     {
 
-        public List<Node> connected;
+        public List<Node> connected = new List<Node>();
 
 
         // list of all the nodes
